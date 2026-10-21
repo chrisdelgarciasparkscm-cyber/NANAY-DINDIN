@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>QUEEN DINDIN | Always Showing Up</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --netflix-red: #E50914;
+      --bg-dark: #141414;
+      --card-bg: #181818;
+      --text-light: #FFFFFF;
+      --text-muted: #AAAAAA;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px 15px 5px;
+    }
+
+    .brand {
+      color: var(--netflix-red);
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      margin-bottom: 20px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .content-details {
+      padding: 20px 16px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .match-badge {
+      color: #46d369;
+    }
+
+    .tag-badge {
+      border: 1px solid var(--text-muted);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .tagline {
+      color: var(--netflix-red);
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .quote-box {
+      border-left: 3px solid var(--netflix-red);
+      padding-left: 12px;
+      margin-bottom: 20px;
+      font-style: italic;
+      color: #DDD;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .main-message {
+      line-height: 1.6;
+      color: #CCC;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    .signature {
+      font-weight: 700;
+      color: var(--text-light);
+      margin-top: 12px;
+    }
+
+    .celebrate-btn {
+      width: 100%;
+      background-color: var(--netflix-red);
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+    }
+
+    .celebrate-btn:active {
+      transform: scale(0.98);
+      background-color: #b80710;
+    }
+
+    .notes-section {
+      width: 100%;
+      max-width: 900px;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    .notes-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 14px;
+      color: var(--text-light);
+      font-weight: 700;
+    }
+
+    .note-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .note-input-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #222;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .note-input-group input:focus {
+      outline: 1px solid var(--netflix-red);
+    }
+
+    .add-btn {
+      width: 100%;
+      background: #333;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      min-height: 48px;
+      transition: background 0.2s ease;
+    }
+
+    .add-btn:active {
+      background: #444;
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .note-card {
+      background: #222;
+      padding: 14px;
+      border-radius: 8px;
+      border-left: 3px solid var(--netflix-red);
+    }
+
+    .note-card p {
+      font-size: 0.9rem;
+      color: #ddd;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .note-card .author {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: right;
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: 30px;
+      margin-bottom: 10px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-align: center;
+    }
+
+    @media (min-width: 600px) {
+      body {
+        padding: 20px;
+      }
+
+      .content-details {
+        padding: 30px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .tagline {
+        font-size: 1.1rem;
+      }
+
+      .celebrate-btn {
+        width: auto;
+        display: inline-flex;
+      }
+
+      .note-input-group {
+        flex-direction: row;
+      }
+
+      .note-input-group input[type="text"] {
+        flex: 1;
+      }
+
+      .add-btn {
+        width: auto;
+        padding: 12px 24px;
+      }
+
+      .notes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">NETFLIX</div>
+  </header>
+
+  <div class="container">
+    <!-- Embedded Video Player -->
+    <div class="video-wrapper">
+      <iframe 
+        src="https://www.drive.google.com/file/d/1L7hdVAZHV0YR-mZjwDrjJ1TGFbYUmTYb/preview" 
+        allow="autoplay" 
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <!-- Details & Tribute Section -->
+    <div class="content-details">
+      <div class="badge-row">
+        <span class="match-badge">100% Match</span>
+        <span class="tag-badge">SINCE DAY 1</span>
+        <span class="tag-badge">HD</span>
+        <span class="tag-badge">SPECIAL</span>
+      </div>
+
+      <h1>QUEEN DINDIN</h1>
+      <div class="tagline">ALWAYS SHOWING UP</div>
+
+      <div class="quote-box">
+        "To someone who never gives up on her faith, deserves a big appreciation and love, so here's our gratitude for you..."
+      </div>
+
+      <div class="main-message">
+        <p>Happy Leader’s appreciation month nay Din. We love and appreciate you. Here's our message for you.</p>
+        <br>
+        <p>Sorry for the late greetings, we hope you feel loved and surprised hehe love you. 💖</p>
+        <div class="signature">— From your Solana Family</div>
+      </div>
+
+      <button class="celebrate-btn" onclick="triggerConfetti()">
+        ❤️ Shower Hearts & Love
+      </button>
+    </div>
+  </div>
+
+  <!-- Appreciation Board -->
+  <div class="notes-section">
+    <h2>Leave a Message for Nanay Dindin</h2>
+    <div class="note-input-group">
+      <input type="text" id="senderName" placeholder="Your Name / Team">
+      <input type="text" id="messageText" placeholder="Write a short message...">
+      <button class="add-btn" onclick="addNote()">Send Love</button>
+    </div>
+
+    <div class="notes-grid" id="notesGrid">
+      <div class="note-card">
+        <p>"Thank you for always guiding us with so much heart and patience!"</p>
+        <div class="author">— Solana Family</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Made with love for Leader's Appreciation Month
+  </footer>
+
+  <script>
+    function triggerConfetti() {
+      confetti({
+        particleCount: 60,
+        spread: 60,
+        origin: { y: 0.7 },
+        colors: ['#E50914', '#ffffff', '#ff69b4']
+      });
+    }
+
+    function addNote() {
+      const name = document.getElementById('senderName').value.trim();
+      const msg = document.getElementById('messageText').value.trim();
+
+      if (!msg) return;
+
+      const grid = document.getElementById('notesGrid');
+      const card = document.createElement('div');
+      card.className = 'note-card';
+      card.innerHTML = `
+        <p>"${msg}"</p>
+        <div class="author">— ${name || 'Anonymous'}</div>
+      `;
+
+      grid.prepend(card);
+      document.getElementById('senderName').value = '';
+      document.getElementById('messageText').value = '';
+      triggerConfetti();
+    }
+  </script>
+
+</body>
+</html>
